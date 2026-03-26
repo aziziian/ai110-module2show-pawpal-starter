@@ -22,6 +22,15 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Smarter Scheduling
+
+PawPal+ goes beyond a simple task list. The `Scheduler` class provides four smart features:
+
+- **Sorting** — tasks are always displayed in chronological order by time, so the owner sees their day in sequence
+- **Filtering** — the UI lets you filter tasks by pet name or completion status to focus on what matters right now
+- **Conflict warnings** — if two tasks are scheduled for the same pet at the same time, the app shows a warning so the owner can fix it before the day starts
+- **Recurring tasks** — marking a daily or weekly task complete automatically creates the next occurrence, so the owner never has to re-enter routine care tasks
+
 ## Getting started
 
 ### Setup

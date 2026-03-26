@@ -36,13 +36,13 @@ This also makes the `Pet` class simpler. A pet just needs a name and species. Th
 
 **a. Constraints and priorities**
 
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
+The scheduler considers three main constraints: time (tasks have a scheduled HH:MM time), priority (low, medium, or high), and frequency (once, daily, or weekly). I decided that time was the most important constraint to sort by because a daily schedule only makes sense if tasks appear in the order they actually happen. Priority is visible in the table so the owner can make judgment calls, but the scheduler doesn't reorder tasks by priority — time wins. This felt right because a medication at 09:00 needs to happen at 09:00 regardless of whether it's labeled "high" or "medium."
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+One tradeoff I made is that conflict detection only flags tasks with the exact same time — it doesn't check for overlapping durations. For example, if "Morning walk" starts at 08:00 and takes 30 minutes, and "Feeding" starts at 08:15, those tasks technically overlap but my system won't flag them.
+
+I made this choice intentionally because handling duration overlap would add a lot of complexity — you'd have to convert HH:MM strings into minutes, calculate end times, and compare ranges instead of single values. For a first version of the app, exact-time conflicts are already useful and easy to understand. The tradeoff is that the scheduler might miss some real scheduling issues, but it also stays simple and predictable, which matters more at this stage.
 
 ---
 
