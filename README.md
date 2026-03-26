@@ -56,7 +56,8 @@ The core behaviors are all covered and all 7 tests pass. The one area not tested
 
 Add your screenshot below after taking one with `streamlit run app.py`:
 
-<a href="/course_images/ai110/your_screenshot_name.png" target="_blank"><img src='/course_images/ai110/your_screenshot_name.png' title='PawPal App' width='' alt='PawPal App' class='center-block' /></a>
+<img width="1003" height="546" alt="image" src="https://github.com/user-attachments/assets/5fecacdf-5c55-48af-a5c8-5e1a3da1669b" />
+
 
 ---
 
