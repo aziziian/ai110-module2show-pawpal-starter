@@ -93,8 +93,11 @@ sorted_tasks = scheduler.sort_tasks(todays_tasks)
 # Conflict warnings
 conflicts = scheduler.detect_conflicts(sorted_tasks)
 if conflicts:
+    st.error("**Scheduling conflicts detected** — two tasks are booked at the same time for the same pet. Please adjust the times below.")
     for warning in conflicts:
         st.warning(f"⚠ {warning}")
+elif sorted_tasks:
+    st.success("No scheduling conflicts — your day looks good!")
 
 if not sorted_tasks:
     st.info("No tasks scheduled for today. Add some above!")
@@ -112,6 +115,23 @@ else:
             "Done": "✓" if task.completed else "○",
         })
     st.table(table_data)
+
+    # Mark complete buttons
+    st.write("**Mark a task complete:**")
+    incomplete = [t for t in sorted_tasks if not t.completed]
+    if not incomplete:
+        st.success("All tasks for today are done!")
+    else:
+        for i, task in enumerate(incomplete):
+            label = f"Complete: {task.time} — {task.description} ({task.pet_name})"
+            if st.button(label, key=f"complete_{i}"):
+                next_task = task.mark_complete()
+                if next_task:
+                    owner.add_task(next_task)
+                    st.success(f"Done! Next '{task.description}' scheduled for {next_task.due_date}.")
+                else:
+                    st.success(f"'{task.description}' marked complete.")
+                st.rerun()
 
 # ── Section 5: Filter tasks ───────────────────────────────────────────────────
 if sorted_tasks and owner.pets:

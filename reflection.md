@@ -50,13 +50,11 @@ I made this choice intentionally because handling duration overlap would add a l
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+I used AI throughout the project in a few different ways. Early on, it helped me think through the class design — I described the scenario and asked it to help me brainstorm attributes and methods for each class. That was probably the most useful part because it gave me a starting point I could react to rather than starting from a blank page. Later I used it more for implementation help, like figuring out how to handle recurring tasks with `timedelta` and how to structure the conflict detection logic. The prompts that worked best were specific ones — asking "what should go in the Scheduler vs the Owner" got a much more useful response than just asking "help me design this app."
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+The AI's first design suggestion put the task list inside each `Pet`, so every pet would own its own tasks. That felt off to me — the owner is the one doing the tasks, not the pet. I pushed back on it and we redesigned so the `Owner` holds all tasks and each `Task` has a `pet_name` field to say which animal it's for. I verified this was the right call by thinking through a concrete scenario: if I want to see all tasks for today, it's much simpler to just loop through `owner.tasks` than to loop through every pet and collect their individual lists. The cleaner retrieval logic confirmed the redesign was worth it.
 
 ---
 
@@ -64,13 +62,11 @@ I made this choice intentionally because handling duration overlap would add a l
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+I tested seven behaviors: marking a task complete, adding tasks to the owner, sorting tasks chronologically, daily recurrence creating a next-day task, conflict detection flagging duplicate times, filtering returning an empty list for a pet with no tasks, and confirming that same-time tasks for *different* pets are not flagged as conflicts. These tests mattered because they cover both the happy paths (things working normally) and edge cases (empty results, no false positives) that could silently break the app.
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+I'm confident the core scheduling logic works correctly — all 7 tests pass and the behaviors feel solid. The main thing I'd test next with more time is duration-based overlap detection. Right now the system only catches exact same-time conflicts, so two tasks that overlap (like 08:00 for 30 min and 08:15 for 20 min) would slip through. That's a known limitation I'd address in the next version.
 
 ---
 
@@ -78,12 +74,12 @@ I made this choice intentionally because handling duration overlap would add a l
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+I'm most satisfied with the class design. Keeping `Owner` as the central manager and `Scheduler` as a separate reasoning layer made the code easy to follow and test independently. The `Scheduler` doesn't store any data — it just reads from the `Owner` and processes it. That separation made it easy to add sorting, filtering, and conflict detection without touching the data model at all.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+If I had another iteration, I'd add duration-aware conflict detection so the app catches overlapping tasks, not just exact same-time ones. I'd also add a date picker to the UI so you could view schedules for future days, not just today. Right now recurring tasks get created but you can't easily see them until that date arrives.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+The biggest thing I learned is that using AI well means staying in the driver's seat. It's easy to just accept whatever the AI suggests, but the best results came when I had an opinion and pushed back. The task-ownership redesign is a good example — the AI gave me a reasonable first answer, but it wasn't the right one for my use case. Treating AI like a collaborator you can argue with, rather than an authority you just follow, made the final design much better.
